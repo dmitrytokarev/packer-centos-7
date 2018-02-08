@@ -1,21 +1,4 @@
 {
-  "provisioners": [
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/ansible.sh"
-    },
-    {
-      "type": "ansible-local",
-      "playbook_file": "ansible/main.yml",
-      "galaxy_file": "requirements.yml"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/cleanup.sh"
-    }
-  ],
   "builders": [
     {
       "type": "virtualbox-iso",
@@ -23,9 +6,9 @@
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
       ],
       "boot_wait": "10s",
-      "disk_size": 81920,
+      "disk_size": 20000,
       "guest_os_type": "RedHat_64",
-      "headless": true,
+      "headless": false,
       "http_directory": "http",
       "iso_urls": [
         "CentOS-7-x86_64-Minimal-1708.iso",
@@ -86,6 +69,15 @@
       }
     }
   ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ansible.sh"
+    }
+  ],
+
   "post-processors": [
     {
       "output": "builds/{{.Provider}}-centos7.box",
